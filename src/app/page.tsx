@@ -309,7 +309,6 @@ export default function Home() {
               'Software engineers sharing their GitHub work',
               'Designers showing skills and social presence',
               'Students building a first portfolio',
-              'Indie hackers linking all their projects',
             ].map(item => (
               <div key={item} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
                 <span style={{ color: '#4ade80' }}>✓</span>
@@ -323,15 +322,11 @@ export default function Home() {
       {/* cta */}
       <section className="max-w-5xl mx-auto px-8 pb-28">
         <div
-          className="rounded-2xl p-14 flex flex-col items-center text-center gap-6 relative overflow-hidden"
+          className="rounded-2xl p-14 flex flex-col items-center text-center gap-6"
           style={{ background: 'var(--surface)' }}
         >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.12) 0%, transparent 60%)' }}
-          />
-          <h2 className="text-4xl font-bold text-white tracking-tight relative">Ready to stand out?</h2>
-          <p className="relative" style={{ color: 'var(--text-muted)' }}>Takes 5 minutes. No templates. No nonsense.</p>
+          <h2 className="text-4xl font-bold text-white tracking-tight">Ready to stand out?</h2>
+          <p style={{ color: 'var(--text-muted)' }}>Takes 5 minutes. No templates. No nonsense.</p>
           <Link
             href="/login"
             className="px-9 py-3.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-80 relative"
