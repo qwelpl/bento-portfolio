@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -73,7 +74,10 @@ export default function LoginPage() {
     <main className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-sm w-full flex flex-col gap-6">
         <div>
-          <Link href="/" className="text-sm hover:underline" style={{ color: 'var(--text-muted)' }}>bento-folio</Link>
+          <Link href="/" className="flex items-center gap-2 w-fit">
+            <Image src="/tiledrop-logo.svg" alt="Tiledrop" width={22} height={22} />
+            <span className="text-sm font-bold text-white">Tiledrop</span>
+          </Link>
           <h1 className="text-2xl font-semibold text-white mt-3">
             {mode === 'login' ? 'Sign in' : 'Create account'}
           </h1>

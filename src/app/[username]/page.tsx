@@ -27,5 +27,5 @@ export async function generateMetadata({
   params: Promise<{ username: string }>
 }) {
   const { username } = await params
-  return { title: `${username} | bento-folio` }
+  return { title: `${username} | Tiledrop` }
 }

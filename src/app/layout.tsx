@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "bento-folio",
-  description: "Build a sleek bento-style portfolio",
+  title: "Tiledrop",
+  description: "Build a bento grid portfolio that actually shows who you are. Drag, drop, share.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
