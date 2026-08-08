@@ -8,6 +8,11 @@ export default function PortfolioPageClient({ portfolio }: { portfolio: Portfoli
   const [width, setWidth] = useState(800)
 
   useEffect(() => {
+    const key = `view:${portfolio.username}`
+    const last = localStorage.getItem(key)
+    const now = Date.now()
+    if (last && now - parseInt(last) < 24 * 60 * 60 * 1000) return
+    localStorage.setItem(key, now.toString())
     fetch(`/api/view/${portfolio.username}`, { method: 'POST' })
   }, [portfolio.username])
 
