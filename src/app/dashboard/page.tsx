@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import CopyButton from './CopyButton'
+import UsernameForm from './UsernameForm'
 
 export default async function Dashboard() {
   const supabase = await createClient()
@@ -52,6 +53,9 @@ export default async function Dashboard() {
               Edit portfolio
             </Link>
             <CopyButton username={portfolio.username} />
+          </div>
+          <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
+            <UsernameForm current={portfolio.username} />
           </div>
           {portfolio.updated_at && (
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
