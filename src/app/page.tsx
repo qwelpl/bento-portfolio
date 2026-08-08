@@ -302,7 +302,6 @@ export default function Home() {
             <h2 className="text-xl font-bold text-white">Built for builders</h2>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
               Developers, designers, and makers who want a home base on the internet without dealing with a portfolio website.
-              No Webflow, no Framer, no headache.
             </p>
           </div>
           <div className="flex-1 flex flex-col gap-2">
