@@ -1,6 +1,6 @@
 'use client'
 import { TileData } from '@/lib/types'
-import { marked } from 'marked'
+import BioRichEditor from '@/components/editor/BioRichEditor'
 
 interface Props {
   data: TileData
@@ -27,19 +27,12 @@ export default function BioTile({ data, editing, onChange }: Props) {
         </div>
         <input className={inp} value={data.avatar || ''} onChange={e => s('avatar', e.target.value)} placeholder="Avatar URL" />
         <div className="flex flex-col gap-1 flex-1">
-          <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Bio · markdown</span>
-          <textarea
-            className="flex-1 min-h-[60px] bg-transparent border border-white/10 focus:border-white/30 rounded text-sm text-white outline-none p-1.5 placeholder:text-white/20 resize-none font-mono transition-colors w-full"
-            value={data.bio || ''}
-            onChange={e => s('bio', e.target.value)}
-            placeholder="Bio..."
-          />
+          <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Bio</span>
+          <BioRichEditor value={data.bio || ''} onChange={v => s('bio', v)} />
         </div>
       </div>
     )
   }
-
-  const bioHtml = data.bio ? marked(data.bio, { breaks: true }) as string : null
 
   return (
     <div className="p-5 h-full flex flex-col justify-between">
@@ -52,8 +45,8 @@ export default function BioTile({ data, editing, onChange }: Props) {
           <p style={{ color: 'var(--text-muted)' }} className="text-sm mt-0.5">{data.title || 'Your title'}</p>
         </div>
       </div>
-      {bioHtml && (
-        <div className="text-sm mt-4 leading-relaxed markdown-content" style={{ color: '#b0b0b0' }} dangerouslySetInnerHTML={{ __html: bioHtml }} />
+      {data.bio && (
+        <div className="text-sm mt-4 leading-relaxed markdown-content" style={{ color: '#b0b0b0' }} dangerouslySetInnerHTML={{ __html: data.bio }} />
       )}
     </div>
   )

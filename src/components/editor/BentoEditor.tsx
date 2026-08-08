@@ -98,12 +98,12 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
 
         <div ref={containerRef} className="flex-1 overflow-y-auto p-4" onClick={() => setEditingId(null)}>
           <GridLayout
-            layout={layout}
+            layout={layout.map(l => ({ ...l, static: l.i === editingId }))}
             cols={4}
             rowHeight={160}
             width={width - 32}
             margin={[12, 12]}
-            onLayoutChange={(l: GridItem[]) => setLayout(l)}
+            onLayoutChange={(l: (GridItem & { static?: boolean })[]) => setLayout(l.map(({ static: _s, ...rest }) => rest as GridItem))}
             draggableHandle=".drag-handle"
           >
             {tiles.map(tile => {
