@@ -83,23 +83,7 @@ export default function GithubTile({ data, editing, onChange }: Props) {
     return () => ro.disconnect()
   }, [weeks.length])
 
-  if (editing) {
-    return (
-      <div className="p-4 h-full flex flex-col gap-3">
-        <input className={titleInp} value={data.tileTitle || ''} onChange={e => onChange?.({ ...data, tileTitle: e.target.value })} placeholder="Section title" />
-        <span className="text-xs" style={{ color: 'var(--text-muted)' }}>GitHub username</span>
-        <input
-          className={inp}
-          value={username}
-          onChange={e => onChange?.({ ...data, githubUsername: e.target.value })}
-          placeholder="e.g. torvalds"
-          autoFocus
-        />
-      </div>
-    )
-  }
-
-  if (!username) {
+  if (!username && !editing) {
     return (
       <div className="p-5 h-full flex items-center justify-center">
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No username set</p>
@@ -109,11 +93,20 @@ export default function GithubTile({ data, editing, onChange }: Props) {
 
   return (
     <div className="p-4 h-full flex flex-col gap-3 min-h-0">
-      {/* header */}
-      <div className="flex-shrink-0">
-        <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{data.tileTitle || 'GitHub'}</p>
-        <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer"
-          className="text-sm font-medium text-white hover:underline">{username}</a>
+      {/* header — editable in place */}
+      <div className="flex-shrink-0 flex flex-col gap-1.5">
+        {editing ? (
+          <>
+            <input className={titleInp} value={data.tileTitle || ''} onChange={e => onChange?.({ ...data, tileTitle: e.target.value })} placeholder="Section title" />
+            <input className={inp} value={username} onChange={e => onChange?.({ ...data, githubUsername: e.target.value })} placeholder="GitHub username" autoFocus />
+          </>
+        ) : (
+          <>
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{data.tileTitle || 'GitHub'}</p>
+            <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer"
+              className="text-sm font-medium text-white hover:underline">{username}</a>
+          </>
+        )}
       </div>
 
       {loading && (
