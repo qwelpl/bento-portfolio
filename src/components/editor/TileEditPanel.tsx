@@ -47,7 +47,14 @@ export default function TileEditPanel({ tile, onChange, onDelete, onClose }: Pro
         <>
           {field('Name', 'name', 'Jane Doe')}
           {field('Title', 'title', 'Software Engineer')}
-          {textarea('Bio', 'bio', 'A short description about yourself...')}
+          <div className="flex flex-col gap-1">
+            <label className="text-xs" style={{ color: 'var(--text-muted)' }}>Bio</label>
+            <RichTextEditor
+              value={(tile.data.bio as string) || ''}
+              onChange={val => set('bio', val)}
+              placeholder="A short description about yourself..."
+            />
+          </div>
           {field('Avatar URL', 'avatar', 'https://...')}
         </>
       )

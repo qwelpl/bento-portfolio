@@ -20,9 +20,11 @@ export default function BioTile({ data }: { data: TileData }) {
         </div>
       </div>
       {data.bio && (
-        <p className="text-sm mt-4 leading-relaxed" style={{ color: '#b0b0b0' }}>
-          {data.bio}
-        </p>
+        <div
+          className="text-sm mt-4 leading-relaxed prose prose-invert prose-sm max-w-none"
+          style={{ color: '#b0b0b0' }}
+          dangerouslySetInnerHTML={{ __html: data.bio }}
+        />
       )}
     </div>
   )
