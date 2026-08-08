@@ -19,7 +19,7 @@ export default function TextTile({ data, editing, onChange }: Props) {
         <input className={`font-semibold ${inp}`} value={data.heading || ''} onChange={e => s('heading', e.target.value)} placeholder="Heading (optional)" />
         <div className="flex flex-col gap-1 flex-1">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Content</span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Content</span>
             <div className="relative group/md">
               <button className="text-[10px] w-4 h-4 flex items-center justify-center rounded-full border transition-colors" style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}>?</button>
               <div className="absolute right-0 bottom-6 w-48 rounded-lg p-2.5 text-xs leading-relaxed invisible group-hover/md:visible z-50 pointer-events-none group-hover/md:pointer-events-auto" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: '#b0b0b0' }}>
@@ -29,7 +29,7 @@ export default function TextTile({ data, editing, onChange }: Props) {
             </div>
           </div>
           <textarea
-            className="flex-1 min-h-[80px] bg-transparent border border-white/10 focus:border-white/30 rounded text-sm text-white outline-none p-1.5 placeholder:text-white/20 resize-none font-mono transition-colors w-full"
+            className="flex-1 min-h-[80px] bg-transparent border border-white/10 focus:border-white/30 rounded text-sm text-white outline-none p-1.5 placeholder:text-white/20 resize-none transition-colors w-full"
             value={data.content || ''}
             onChange={e => s('content', e.target.value)}
             placeholder="Write something..."

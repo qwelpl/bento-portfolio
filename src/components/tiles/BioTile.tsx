@@ -27,7 +27,7 @@ export default function BioTile({ data, editing, onChange }: Props) {
         <input className={inp} value={data.avatar || ''} onChange={e => s('avatar', e.target.value)} placeholder="Avatar URL" />
         <div className="flex flex-col gap-1">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Bio</span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Bio</span>
             <div className="relative group/md">
               <button className="text-[10px] w-4 h-4 flex items-center justify-center rounded-full border transition-colors" style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }}>?</button>
               <div className="absolute right-0 bottom-6 w-48 rounded-lg p-2.5 text-xs leading-relaxed invisible group-hover/md:visible z-50 pointer-events-none group-hover/md:pointer-events-auto" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)', color: '#b0b0b0' }}>
@@ -37,7 +37,7 @@ export default function BioTile({ data, editing, onChange }: Props) {
             </div>
           </div>
           <textarea
-            className="bg-transparent border border-white/10 focus:border-white/30 rounded text-sm text-white outline-none p-1.5 placeholder:text-white/20 resize-none font-mono transition-colors w-full"
+            className="bg-transparent border border-white/10 focus:border-white/30 rounded text-sm text-white outline-none p-1.5 placeholder:text-white/20 resize-none transition-colors w-full"
             rows={3}
             value={data.bio || ''}
             onChange={e => s('bio', e.target.value)}
