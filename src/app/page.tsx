@@ -215,7 +215,6 @@ export default function Home() {
         </h1>
         <p className="text-lg max-w-md leading-relaxed" style={{ color: 'var(--text-muted)' }}>
           Stop sending a boring resume link. Build a bento grid portfolio that actually shows who you are.
-          Drag, drop, share.
         </p>
         <div className="flex items-center gap-3 mt-2">
           <Link
