@@ -8,6 +8,10 @@ export default function PortfolioPageClient({ portfolio }: { portfolio: Portfoli
   const [width, setWidth] = useState(800)
 
   useEffect(() => {
+    fetch(`/api/view/${portfolio.username}`, { method: 'POST' })
+  }, [portfolio.username])
+
+  useEffect(() => {
     if (!containerRef.current) return
     const observer = new ResizeObserver(([entry]) => {
       setWidth(entry.contentRect.width)

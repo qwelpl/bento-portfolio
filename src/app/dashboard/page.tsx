@@ -122,7 +122,7 @@ export default async function Dashboard() {
 
   const { data: portfolio } = await supabase
     .from('portfolios')
-    .select('username, updated_at, tiles, display_name')
+    .select('username, updated_at, tiles, display_name, views')
     .eq('user_id', user.id)
     .single()
 
@@ -154,9 +154,10 @@ export default async function Dashboard() {
         {portfolio ? (
           <>
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-3">
               {[
-                { label: 'Total tiles', value: tileCount.toString(), sub: tileCount === 0 ? 'none yet' : tileCount === 1 ? '1 tile placed' : `${tileCount} placed` },
+                { label: 'Portfolio views', value: (portfolio.views ?? 0).toLocaleString(), sub: 'all time' },
+                { label: 'Total tiles', value: tileCount.toString(), sub: tileCount === 0 ? 'none yet' : `${tileCount} placed` },
                 { label: 'Last updated', value: timeAgo(portfolio.updated_at), sub: new Date(portfolio.updated_at).toLocaleDateString() },
                 { label: 'Your handle', value: `/${portfolio.username}`, sub: 'shareable link' },
               ].map(s => (
