@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import "react-grid-layout/css/styles.css";
+@import "react-resizable/css/styles.css";
+
+:root {
+  --bg: #0e0e0e;
+  --surface: #1a1a1a;
+  --surface-2: #222;
+  --border: #2a2a2a;
+  --text: #ededed;
+  --text-muted: #888;
+  --accent: #7c3aed;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  margin: 0;
+}
+
+.bento-tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.bento-tile:hover {
+  border-color: #3a3a3a;
+}
+
+.react-grid-item.react-grid-placeholder {
+  background: var(--accent);
+  opacity: 0.15;
+  border-radius: 16px;
+}
+
+.react-resizable-handle {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.react-grid-item:hover .react-resizable-handle {
+  opacity: 1;
+}
+
+.react-resizable-handle::after {
+  border-color: var(--text-muted) !important;
+}
