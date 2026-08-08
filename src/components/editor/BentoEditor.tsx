@@ -49,7 +49,18 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
   }
 
   const updateTileData = (id: string, data: TileData) => {
-    setTiles(prev => prev.map(t => t.id === id ? { ...t, data } : t))
+    setTiles(prev => prev.map(t => {
+      if (t.id !== id) return t
+      // Auto-expand links tile to fit content
+      if (t.type === 'links') {
+        const n = data.links?.length ?? 0
+        // base ~94px (title + add button + padding) + ~60px per link
+        const neededPx = 94 + n * 60
+        const neededH = Math.max(1, Math.ceil(neededPx / 172))
+        setLayout(prev => prev.map(l => l.i === id ? { ...l, h: neededH } : l))
+      }
+      return { ...t, data }
+    }))
   }
 
   const deleteTile = (id: string) => {
