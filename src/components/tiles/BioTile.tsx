@@ -1,5 +1,6 @@
 'use client'
 import { TileData } from '@/lib/types'
+import { marked } from 'marked'
 
 export default function BioTile({ data }: { data: TileData }) {
   return (
@@ -21,9 +22,9 @@ export default function BioTile({ data }: { data: TileData }) {
       </div>
       {data.bio && (
         <div
-          className="text-sm mt-4 leading-relaxed prose prose-invert prose-sm max-w-none"
+          className="text-sm mt-4 leading-relaxed markdown-content"
           style={{ color: '#b0b0b0' }}
-          dangerouslySetInnerHTML={{ __html: data.bio }}
+          dangerouslySetInnerHTML={{ __html: marked(data.bio, { breaks: true }) as string }}
         />
       )}
     </div>

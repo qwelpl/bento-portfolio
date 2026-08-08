@@ -1,72 +1,42 @@
 'use client'
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { useEffect } from 'react'
 
 interface Props {
   value: string
-  onChange: (html: string) => void
+  onChange: (markdown: string) => void
   placeholder?: string
 }
 
 export default function RichTextEditor({ value, onChange, placeholder }: Props) {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: value || '',
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML())
-    },
-    editorProps: {
-      attributes: {
-        class: 'outline-none min-h-[96px] text-sm text-white leading-relaxed',
-      },
-    },
-  })
-
-  useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value || '')
-    }
-  }, [value, editor])
-
-  const btn = (action: () => void, active: boolean, label: string) => (
-    <button
-      type="button"
-      onMouseDown={e => { e.preventDefault(); action() }}
-      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-        active ? 'text-white' : 'hover:text-white'
-      }`}
-      style={{ background: active ? 'var(--surface)' : 'transparent', color: active ? 'white' : 'var(--text-muted)' }}
-    >
-      {label}
-    </button>
-  )
-
   return (
-    <div
-      className="rounded-lg text-sm outline-none focus-within:ring-1 focus-within:ring-purple-500"
-      style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
-    >
-      <div
-        className="flex items-center gap-1 px-2 py-1.5 flex-wrap"
-        style={{ borderBottom: '1px solid var(--border)' }}
+    <div className="relative">
+      <textarea
+        className="w-full px-3 py-2 rounded-lg text-sm text-white outline-none focus:ring-1 focus:ring-purple-500 resize-none font-mono"
+        style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
+        rows={5}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
+      <a
+        href="https://www.markdownguide.org/basic-syntax/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group absolute top-2 right-2"
+        title="Markdown supported"
       >
-        {btn(() => editor?.chain().focus().toggleBold().run(), !!editor?.isActive('bold'), 'B')}
-        {btn(() => editor?.chain().focus().toggleItalic().run(), !!editor?.isActive('italic'), 'I')}
-        {btn(() => editor?.chain().focus().toggleStrike().run(), !!editor?.isActive('strike'), 'S')}
-        {btn(() => editor?.chain().focus().toggleHeading({ level: 2 }).run(), !!editor?.isActive('heading', { level: 2 }), 'H2')}
-        {btn(() => editor?.chain().focus().toggleBulletList().run(), !!editor?.isActive('bulletList'), '• List')}
-        {btn(() => editor?.chain().focus().toggleOrderedList().run(), !!editor?.isActive('orderedList'), '1. List')}
-        {btn(() => editor?.chain().focus().toggleBlockquote().run(), !!editor?.isActive('blockquote'), '❝')}
-        {btn(() => editor?.chain().focus().toggleCode().run(), !!editor?.isActive('code'), '<>')}
-        {btn(() => editor?.chain().focus().setHardBreak().run(), false, '↵')}
-      </div>
-      <div className="px-3 py-2">
-        {!editor?.getText() && !editor?.isFocused && placeholder && (
-          <p className="text-xs pointer-events-none absolute" style={{ color: 'var(--text-muted)' }}>{placeholder}</p>
-        )}
-        <EditorContent editor={editor} />
-      </div>
+        <span
+          className="flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold cursor-pointer select-none transition-colors"
+          style={{ background: 'var(--border)', color: 'var(--text-muted)' }}
+        >
+          ?
+        </span>
+        <span
+          className="absolute right-0 top-6 hidden group-hover:block text-xs rounded-md px-2 py-1 whitespace-nowrap z-10 pointer-events-none"
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-muted)' }}
+        >
+          Markdown supported — click to learn more
+        </span>
+      </a>
     </div>
   )
 }
