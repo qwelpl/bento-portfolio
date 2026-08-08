@@ -92,7 +92,7 @@ export default function GithubTile({ data, editing, onChange }: Props) {
   }
 
   return (
-    <div className="p-4 h-full flex flex-col gap-3 min-h-0">
+    <div className="p-4 pb-3 h-full flex flex-col gap-2 min-h-0">
       {/* header — editable in place */}
       <div className="flex-shrink-0 flex flex-col gap-1.5">
         {editing ? (
@@ -151,7 +151,7 @@ export default function GithubTile({ data, editing, onChange }: Props) {
 
           {/* stats row — always anchored at bottom */}
           <div
-            className="flex-shrink-0 grid grid-cols-3 gap-2 rounded-xl p-3"
+            className="flex-shrink-0 grid grid-cols-3 gap-2 rounded-xl px-3 pt-3 pb-4"
             style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
           >
             <StatItem
