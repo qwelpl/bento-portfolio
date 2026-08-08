@@ -1,4 +1,4 @@
-export type TileType = 'bio' | 'social' | 'text' | 'image' | 'links' | 'location' | 'skills'
+export type TileType = 'bio' | 'social' | 'text' | 'image' | 'links' | 'location' | 'skills' | 'github'
 
 export interface TileData {
   name?: string
@@ -6,6 +6,8 @@ export interface TileData {
   bio?: string
   avatar?: string
   github?: string
+  githubUsername?: string
+  tileTitle?: string
   twitter?: string
   linkedin?: string
   instagram?: string

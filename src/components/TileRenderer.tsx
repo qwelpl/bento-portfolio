@@ -7,6 +7,7 @@ import ImageTile from './tiles/ImageTile'
 import LinksTile from './tiles/LinksTile'
 import LocationTile from './tiles/LocationTile'
 import SkillsTile from './tiles/SkillsTile'
+import GithubTile from './tiles/GithubTile'
 
 interface Props {
   tile: BentoTile
@@ -24,6 +25,7 @@ export default function TileRenderer({ tile, editing, onChange }: Props) {
     case 'links':    return <LinksTile {...props} />
     case 'location': return <LocationTile {...props} />
     case 'skills':   return <SkillsTile {...props} />
+    case 'github':   return <GithubTile {...props} />
     default:         return null
   }
 }

@@ -16,6 +16,7 @@ const socials: { key: keyof TileData; label: string; base: string }[] = [
 ]
 
 const inp = "bg-transparent border-b border-white/10 focus:border-white/30 text-white text-sm outline-none flex-1 py-0.5 placeholder:text-white/20 transition-colors"
+const titleInp = "bg-transparent text-white text-sm font-medium outline-none w-full border-b border-white/10 focus:border-white/30 pb-1.5 placeholder:text-white/20 transition-colors"
 
 interface Props {
   data: TileData
@@ -29,7 +30,7 @@ export default function SocialTile({ data, editing, onChange }: Props) {
   if (editing) {
     return (
       <div className="p-4 h-full flex flex-col gap-3 overflow-y-auto">
-        <p className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Social handles</p>
+        <input className={titleInp} value={data.tileTitle || ''} onChange={e => s('tileTitle', e.target.value)} placeholder="Section title" />
         {socials.map(({ key, label }) => (
           <div key={key} className="flex items-center gap-2">
             <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" style={{ color: 'var(--text-muted)' }}>
@@ -51,7 +52,7 @@ export default function SocialTile({ data, editing, onChange }: Props) {
 
   return (
     <div className="p-5 h-full flex flex-col gap-3">
-      <p className="text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Find me on</p>
+      <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{data.tileTitle || 'Find me on'}</p>
       <div className="flex flex-col gap-2">
         {active.map(l => {
           const handle = data[l.key] as string

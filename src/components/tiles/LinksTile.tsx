@@ -8,6 +8,7 @@ interface Props {
 }
 
 const inp = "bg-transparent border-b border-white/10 focus:border-white/30 text-white text-xs outline-none flex-1 py-0.5 placeholder:text-white/20 transition-colors"
+const titleInp = "bg-transparent text-white text-sm font-medium outline-none w-full border-b border-white/10 focus:border-white/30 pb-1.5 placeholder:text-white/20 transition-colors"
 
 export default function LinksTile({ data, editing, onChange }: Props) {
   const links = data.links || []
@@ -16,7 +17,7 @@ export default function LinksTile({ data, editing, onChange }: Props) {
   if (editing) {
     return (
       <div className="p-3 h-full flex flex-col gap-2 overflow-y-auto">
-        <p className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Links</p>
+        <input className={titleInp} value={data.tileTitle || ''} onChange={e => onChange?.({ ...data, tileTitle: e.target.value })} placeholder="Section title" />
         {links.map((link, i) => (
           <div key={i} className="flex items-center gap-1.5 rounded p-1.5" style={{ background: 'var(--surface-2)' }}>
             <div className="flex flex-col gap-1 flex-1 min-w-0">
@@ -39,7 +40,7 @@ export default function LinksTile({ data, editing, onChange }: Props) {
 
   return (
     <div className="p-5 h-full flex flex-col gap-2">
-      <p className="text-xs uppercase tracking-widest mb-1" style={{ color: 'var(--text-muted)' }}>Links</p>
+      <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>{data.tileTitle || 'Links'}</p>
       {links.length === 0 ? (
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No links added</p>
       ) : (

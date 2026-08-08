@@ -16,6 +16,7 @@ const TILE_DEFAULTS: Record<TileType, { w: number; h: number; label: string }> =
   links:    { w: 1, h: 2, label: 'Links' },
   location: { w: 1, h: 1, label: 'Location' },
   skills:   { w: 2, h: 1, label: 'Skills' },
+  github:   { w: 2, h: 2, label: 'GitHub' },
 }
 
 interface Props {

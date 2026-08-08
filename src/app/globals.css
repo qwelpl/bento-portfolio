@@ -33,6 +33,9 @@ body {
   border-color: #3a3a3a;
 }
 
+.bento-tile * { scrollbar-width: none; }
+.bento-tile *::-webkit-scrollbar { display: none; }
+
 .react-grid-item.react-grid-placeholder {
   background: var(--accent);
   opacity: 0.15;
