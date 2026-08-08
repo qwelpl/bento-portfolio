@@ -1,6 +1,7 @@
 'use client'
 import { useState, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { v4 as uuid } from 'uuid'
 import { BentoTile, GridItem, TileData, TileType } from '@/lib/types'
 import TileRenderer from '@/components/TileRenderer'
@@ -81,7 +82,19 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
     <div className="flex h-screen" style={{ background: 'var(--bg)' }}>
       {/* left sidebar — add tiles */}
       <div className="w-48 flex-shrink-0 flex flex-col gap-1 p-3 overflow-y-auto" style={{ borderRight: '1px solid var(--border)', background: 'var(--surface)' }}>
-        <p className="text-xs uppercase tracking-widest px-2 pb-2" style={{ color: 'var(--text-muted)' }}>Add tile</p>
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors mb-1"
+          style={{ color: 'var(--text-muted)' }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          dashboard
+        </Link>
+        <p className="text-xs px-2 pb-1" style={{ color: 'var(--text-muted)' }}>add tile</p>
         {(['bio','social','text','image','links','location','skills'] as TileType[]).map(type => (
           <button
             key={type}
