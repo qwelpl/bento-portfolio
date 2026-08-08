@@ -168,6 +168,7 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
             preventCollision={true}
             onLayoutChange={(l: (GridItem & { static?: boolean })[]) => setLayout(l.map(({ static: _s, ...rest }) => rest as GridItem))}
             draggableHandle=".drag-handle"
+            style={{ minHeight: Math.max(...layout.map(l => l.y + l.h), 0) * 172 + 10 * 172 }}
           >
             {tiles.map(tile => {
               const isEditing = editingId === tile.id
