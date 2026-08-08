@@ -164,12 +164,12 @@ const FEATURES = [
   {
     icon: '↗',
     title: 'One shareable link',
-    desc: 'Pick your handle. Share tiledrop.vercel.app/you everywhere. No app needed to view it.',
+    desc: 'Pick your handle. Share tiledrop.vercel.app/you everywhere.',
   },
   {
     icon: '◎',
     title: 'Markdown support',
-    desc: 'Write your bio and text tiles in markdown. Bold, italics, links — all rendered clean.',
+    desc: 'Write your bio and text tiles in markdown.',
   },
   {
     icon: '⊞',
