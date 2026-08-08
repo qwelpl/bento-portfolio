@@ -86,15 +86,12 @@ export default function GithubReposTile({ data, editing, onChange }: Props) {
               onChange={e => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               onBlur={() => addRepo(input)}
-              placeholder={repos.length === 0 ? 'owner/repo or just repo name...' : ''}
+              placeholder={repos.length === 0 ? 'Type owner/repo or reponame, press Enter to add' : 'Add another...'}
               className="bg-transparent outline-none text-sm text-white placeholder:text-white/20 min-w-[160px] flex-1 py-0.5"
             />
           </div>
         </div>
-        <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-          Enter <span className="text-white/60">owner/repo</span> or just <span className="text-white/60">repo</span> — uses your GitHub username as owner
-        </p>
-        <input className={inp} value={data.githubUsername || ''} onChange={e => onChange?.({ ...data, githubUsername: e.target.value })} placeholder="Your GitHub username (for short names)" />
+        <input className={inp} value={data.githubUsername || ''} onChange={e => onChange?.({ ...data, githubUsername: e.target.value })} placeholder="Your GitHub username (used when owner is omitted)" />
       </div>
     )
   }
