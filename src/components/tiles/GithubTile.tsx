@@ -5,7 +5,7 @@ import { TileData } from '@/lib/types'
 interface Contribution {
   date: string
   count: number
-  intensity: number
+  level: number
 }
 
 interface Props {
@@ -119,7 +119,7 @@ export default function GithubTile({ data, editing, onChange }: Props) {
                       width: 10,
                       height: 10,
                       borderRadius: 2,
-                      background: day ? COLORS[Math.min(day.intensity, 4)] : 'transparent',
+                      background: day ? COLORS[Math.min(day.level, 4)] : 'transparent',
                     }}
                   />
                 )
