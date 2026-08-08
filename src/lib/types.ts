@@ -18,6 +18,7 @@ export interface TileData {
   caption?: string
   links?: { label: string; url: string }[]
   city?: string
+  state?: string
   country?: string
   skills?: string[]
   bgColor?: string
