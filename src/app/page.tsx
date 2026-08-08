@@ -210,11 +210,8 @@ export default function Home() {
         >
           Free — no credit card
         </div>
-        <h1 className="text-5xl sm:text-6xl font-bold text-white tracking-tight leading-[1.08] max-w-2xl">
-          Your portfolio,<br />
-          <span style={{ background: 'linear-gradient(135deg, #7c3aed, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            finally interesting.
-          </span>
+        <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight whitespace-nowrap">
+          Your portfolio deserves more.
         </h1>
         <p className="text-lg max-w-md leading-relaxed" style={{ color: 'var(--text-muted)' }}>
           Stop sending a boring resume link. Build a bento grid portfolio that actually shows who you are.
