@@ -174,7 +174,7 @@ const FEATURES = [
   {
     icon: '⊞',
     title: 'All your stuff',
-    desc: 'Skills tags, location, social handles, links, and custom text tiles. Put it all in one place.',
+    desc: 'Skills tags, location, social handles, links, and custom text tiles.',
   },
 ]
 
