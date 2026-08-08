@@ -8,31 +8,55 @@ const icons: Record<string, string> = {
   instagram: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z',
 }
 
-const links: { key: keyof TileData; label: string; base: string }[] = [
+const socials: { key: keyof TileData; label: string; base: string }[] = [
   { key: 'github', label: 'GitHub', base: 'https://github.com/' },
   { key: 'twitter', label: 'Twitter / X', base: 'https://x.com/' },
   { key: 'linkedin', label: 'LinkedIn', base: 'https://linkedin.com/in/' },
   { key: 'instagram', label: 'Instagram', base: 'https://instagram.com/' },
 ]
 
-export default function SocialTile({ data }: { data: TileData }) {
-  const active = links.filter(l => data[l.key as keyof TileData])
+const inp = "bg-transparent border-b border-white/10 focus:border-white/30 text-white text-sm outline-none flex-1 py-0.5 placeholder:text-white/20 transition-colors"
+
+interface Props {
+  data: TileData
+  editing?: boolean
+  onChange?: (data: TileData) => void
+}
+
+export default function SocialTile({ data, editing, onChange }: Props) {
+  const s = (key: keyof TileData, val: string) => onChange?.({ ...data, [key]: val })
+
+  if (editing) {
+    return (
+      <div className="p-4 h-full flex flex-col gap-3 overflow-y-auto">
+        <p className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Social handles</p>
+        {socials.map(({ key, label }) => (
+          <div key={key} className="flex items-center gap-2">
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" style={{ color: 'var(--text-muted)' }}>
+              <path d={icons[key as string] || ''} />
+            </svg>
+            <input
+              className={inp}
+              value={(data[key] as string) || ''}
+              onChange={e => s(key, e.target.value)}
+              placeholder={label}
+            />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const active = socials.filter(l => data[l.key])
 
   return (
     <div className="p-5 h-full flex flex-col gap-3">
       <p className="text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Find me on</p>
       <div className="flex flex-col gap-2">
         {active.map(l => {
-          const handle = data[l.key as keyof TileData] as string
+          const handle = data[l.key] as string
           return (
-            <a
-              key={l.key}
-              href={`${l.base}${handle}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 text-sm hover:text-white transition-colors"
-              style={{ color: '#b0b0b0' }}
-            >
+            <a key={l.key} href={`${l.base}${handle}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm hover:text-white transition-colors" style={{ color: '#b0b0b0' }}>
               <svg viewBox="0 0 24 24" className="w-4 h-4 flex-shrink-0" fill="currentColor">
                 <path d={icons[l.key as string] || ''} />
               </svg>
@@ -40,9 +64,7 @@ export default function SocialTile({ data }: { data: TileData }) {
             </a>
           )
         })}
-        {active.length === 0 && (
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No socials added</p>
-        )}
+        {active.length === 0 && <p className="text-sm" style={{ color: 'var(--text-muted)' }}>No socials added</p>}
       </div>
     </div>
   )

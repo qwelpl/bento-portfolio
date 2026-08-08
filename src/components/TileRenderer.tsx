@@ -1,5 +1,5 @@
 'use client'
-import { BentoTile } from '@/lib/types'
+import { BentoTile, TileData } from '@/lib/types'
 import BioTile from './tiles/BioTile'
 import SocialTile from './tiles/SocialTile'
 import TextTile from './tiles/TextTile'
@@ -8,15 +8,22 @@ import LinksTile from './tiles/LinksTile'
 import LocationTile from './tiles/LocationTile'
 import SkillsTile from './tiles/SkillsTile'
 
-export default function TileRenderer({ tile }: { tile: BentoTile }) {
+interface Props {
+  tile: BentoTile
+  editing?: boolean
+  onChange?: (data: TileData) => void
+}
+
+export default function TileRenderer({ tile, editing, onChange }: Props) {
+  const props = { data: tile.data, editing, onChange }
   switch (tile.type) {
-    case 'bio': return <BioTile data={tile.data} />
-    case 'social': return <SocialTile data={tile.data} />
-    case 'text': return <TextTile data={tile.data} />
-    case 'image': return <ImageTile data={tile.data} />
-    case 'links': return <LinksTile data={tile.data} />
-    case 'location': return <LocationTile data={tile.data} />
-    case 'skills': return <SkillsTile data={tile.data} />
-    default: return null
+    case 'bio':      return <BioTile {...props} />
+    case 'social':   return <SocialTile {...props} />
+    case 'text':     return <TextTile {...props} />
+    case 'image':    return <ImageTile {...props} />
+    case 'links':    return <LinksTile {...props} />
+    case 'location': return <LocationTile {...props} />
+    case 'skills':   return <SkillsTile {...props} />
+    default:         return null
   }
 }

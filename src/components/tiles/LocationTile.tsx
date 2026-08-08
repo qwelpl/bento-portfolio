@@ -1,7 +1,26 @@
 'use client'
 import { TileData } from '@/lib/types'
 
-export default function LocationTile({ data }: { data: TileData }) {
+interface Props {
+  data: TileData
+  editing?: boolean
+  onChange?: (data: TileData) => void
+}
+
+const inp = "bg-transparent border-b border-white/10 focus:border-white/30 text-white text-sm outline-none w-full py-0.5 placeholder:text-white/20 transition-colors"
+
+export default function LocationTile({ data, editing, onChange }: Props) {
+  const s = (key: keyof TileData, val: string) => onChange?.({ ...data, [key]: val })
+
+  if (editing) {
+    return (
+      <div className="p-4 h-full flex flex-col justify-center gap-3">
+        <input className={inp} value={data.city || ''} onChange={e => s('city', e.target.value)} placeholder="City" />
+        <input className={inp} value={data.country || ''} onChange={e => s('country', e.target.value)} placeholder="Country" />
+      </div>
+    )
+  }
+
   return (
     <div className="p-5 h-full flex flex-col justify-center gap-1">
       <p className="text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Based in</p>
