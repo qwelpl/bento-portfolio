@@ -92,9 +92,9 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-          dashboard
+          Dashboard
         </Link>
-        <p className="text-xs px-2 pb-1" style={{ color: 'var(--text-muted)' }}>add tile</p>
+        <p className="text-xs font-semibold px-2 pb-1 pt-3 text-white">Add tile</p>
         {(['bio','social','text','image','links','location','skills'] as TileType[]).map(type => (
           <button
             key={type}
