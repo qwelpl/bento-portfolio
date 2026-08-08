@@ -72,9 +72,10 @@ export default function GithubTile({ data, editing, onChange }: Props) {
     if (!el || weeks.length === 0) return
     const numCols = weeks.length
     const compute = () => {
-      const { width } = el.getBoundingClientRect()
+      const { width, height } = el.getBoundingClientRect()
       const byWidth = Math.floor((width - (numCols - 1) * GAP) / numCols)
-      setCellSize(Math.max(Math.min(byWidth, 12), 4))
+      const byHeight = Math.floor((height - 6 * GAP) / 7)
+      setCellSize(Math.max(Math.min(byWidth, byHeight), 4))
     }
     const ro = new ResizeObserver(compute)
     ro.observe(el)
@@ -122,8 +123,8 @@ export default function GithubTile({ data, editing, onChange }: Props) {
 
       {!loading && !error && gh && (
         <>
-          {/* heatmap — natural height from cell size, stats pushed to bottom */}
-          <div ref={heatmapRef} className="flex-shrink-0 overflow-hidden flex items-center">
+          {/* heatmap — fills remaining space */}
+          <div ref={heatmapRef} className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
             <div className="flex" style={{ gap: GAP }}>
               {weeks.map((week, wi) => (
                 <div key={wi} className="flex flex-col" style={{ gap: GAP }}>
