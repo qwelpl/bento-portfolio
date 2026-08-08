@@ -18,13 +18,8 @@ export default function PortfolioPageClient({ portfolio }: { portfolio: Portfoli
   }, [])
 
   return (
-    <main className="min-h-screen px-4 py-8 max-w-4xl mx-auto">
-      <div className="mb-6">
-        <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-          {portfolio.display_name || portfolio.username}
-        </p>
-      </div>
-      <div ref={containerRef}>
+    <main className="min-h-screen">
+      <div ref={containerRef} style={{ maxWidth: 1920, margin: '0 auto' }}>
         {width > 0 && (
           <PortfolioView
             tiles={portfolio.tiles || []}

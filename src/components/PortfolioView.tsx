@@ -25,6 +25,7 @@ export default function PortfolioView({ tiles, layout, width }: Props) {
       margin={[12, 12]}
       isDraggable={false}
       isResizable={false}
+      compactType={null}
     >
       {tiles.map(tile => (
         <div key={tile.id} className="bento-tile">
