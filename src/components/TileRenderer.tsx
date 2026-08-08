@@ -8,6 +8,7 @@ import LinksTile from './tiles/LinksTile'
 import LocationTile from './tiles/LocationTile'
 import SkillsTile from './tiles/SkillsTile'
 import GithubTile from './tiles/GithubTile'
+import GithubReposTile from './tiles/GithubReposTile'
 
 interface Props {
   tile: BentoTile
@@ -25,7 +26,8 @@ export default function TileRenderer({ tile, editing, onChange }: Props) {
     case 'links':    return <LinksTile {...props} />
     case 'location': return <LocationTile {...props} />
     case 'skills':   return <SkillsTile {...props} />
-    case 'github':   return <GithubTile {...props} />
-    default:         return null
+    case 'github':        return <GithubTile {...props} />
+    case 'github-repos':  return <GithubReposTile {...props} />
+    default:              return null
   }
 }

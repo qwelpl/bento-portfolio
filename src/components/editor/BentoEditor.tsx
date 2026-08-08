@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { v4 as uuid } from 'uuid'
 import { BentoTile, GridItem, TileData, TileType } from '@/lib/types'
@@ -15,8 +15,9 @@ const TILE_DEFAULTS: Record<TileType, { w: number; h: number; label: string; min
   image:    { w: 1, h: 2, label: 'Image' },
   links:    { w: 1, h: 2, label: 'Links' },
   location: { w: 1, h: 1, label: 'Location' },
-  skills:   { w: 2, h: 1, label: 'Skills' },
-  github:   { w: 2, h: 2, label: 'GitHub', minH: 2 },
+  skills:        { w: 2, h: 1, label: 'Skills' },
+  github:        { w: 2, h: 2, label: 'GitHub', minH: 2 },
+  'github-repos': { w: 2, h: 3, label: 'Repositories' },
 }
 
 interface Props {
@@ -31,6 +32,7 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
   const [editingId, setEditingId] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [width, setWidth] = useState(1920)
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null)
 
   const containerRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return
@@ -80,7 +82,7 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
       {/* left sidebar — add tiles */}
       <div className="w-48 flex-shrink-0 flex flex-col gap-1 p-3 overflow-y-auto" style={{ borderRight: '1px solid var(--border)', background: 'var(--surface)' }}>
         <p className="text-xs uppercase tracking-widest px-2 pb-2" style={{ color: 'var(--text-muted)' }}>Add tile</p>
-        {(Object.keys(TILE_DEFAULTS) as TileType[]).map(type => (
+        {(['bio','social','text','image','links','location','skills'] as TileType[]).map(type => (
           <button
             key={type}
             onClick={() => addTile(type)}
@@ -92,6 +94,35 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
             {TILE_DEFAULTS[type].label}
           </button>
         ))}
+        {/* GitHub group */}
+        <button
+          onClick={() => setExpandedGroup(expandedGroup === 'github' ? null : 'github')}
+          className="w-full text-left px-3 py-2 rounded-lg text-sm hover:text-white transition-colors flex items-center justify-between"
+          style={{ color: '#b0b0b0' }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+        >
+          <span>GitHub</span>
+          <svg className="w-3 h-3 transition-transform" style={{ transform: expandedGroup === 'github' ? 'rotate(90deg)' : 'rotate(0deg)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+        {expandedGroup === 'github' && (
+          <div className="flex flex-col gap-0.5 pl-2">
+            {(['github', 'github-repos'] as TileType[]).map(type => (
+              <button
+                key={type}
+                onClick={() => addTile(type)}
+                className="w-full text-left px-3 py-1.5 rounded-lg text-sm hover:text-white transition-colors"
+                style={{ color: '#888' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+              >
+                {type === 'github' ? 'Stats' : 'Repositories'}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* canvas */}
