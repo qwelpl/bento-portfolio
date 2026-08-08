@@ -8,7 +8,7 @@ import TileRenderer from '@/components/TileRenderer'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const GridLayout = dynamic<any>(() => import('react-grid-layout') as any, { ssr: false })
 
-const TILE_DEFAULTS: Record<TileType, { w: number; h: number; label: string }> = {
+const TILE_DEFAULTS: Record<TileType, { w: number; h: number; label: string; minH?: number }> = {
   bio:      { w: 2, h: 2, label: 'Bio' },
   social:   { w: 1, h: 2, label: 'Social' },
   text:     { w: 2, h: 1, label: 'Text' },
@@ -16,7 +16,7 @@ const TILE_DEFAULTS: Record<TileType, { w: number; h: number; label: string }> =
   links:    { w: 1, h: 2, label: 'Links' },
   location: { w: 1, h: 1, label: 'Location' },
   skills:   { w: 2, h: 1, label: 'Skills' },
-  github:   { w: 2, h: 2, label: 'GitHub' },
+  github:   { w: 2, h: 2, label: 'GitHub', minH: 2 },
 }
 
 interface Props {
@@ -44,7 +44,7 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
     const def = TILE_DEFAULTS[type]
     const maxY = layout.reduce((m, l) => Math.max(m, l.y + l.h), 0)
     setTiles(prev => [...prev, { id, type, data: {} }])
-    setLayout(prev => [...prev, { i: id, x: 0, y: maxY, w: def.w, h: def.h, minW: 1, minH: 1 }])
+    setLayout(prev => [...prev, { i: id, x: 0, y: maxY, w: def.w, h: def.h, minW: 1, minH: def.minH ?? 1 }])
     setEditingId(id)
   }
 

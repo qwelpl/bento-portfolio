@@ -72,10 +72,9 @@ export default function GithubTile({ data, editing, onChange }: Props) {
     if (!el || weeks.length === 0) return
     const numCols = weeks.length
     const compute = () => {
-      const { width, height } = el.getBoundingClientRect()
+      const { width } = el.getBoundingClientRect()
       const byWidth = Math.floor((width - (numCols - 1) * GAP) / numCols)
-      const byHeight = Math.floor((height - 6 * GAP) / 7)
-      setCellSize(Math.max(Math.min(byWidth, byHeight, 14), 3))
+      setCellSize(Math.max(Math.min(byWidth, 12), 4))
     }
     const ro = new ResizeObserver(compute)
     ro.observe(el)
@@ -123,8 +122,8 @@ export default function GithubTile({ data, editing, onChange }: Props) {
 
       {!loading && !error && gh && (
         <>
-          {/* heatmap — grows to fill available space */}
-          <div ref={heatmapRef} className="flex-1 min-h-0 overflow-hidden flex items-center">
+          {/* heatmap — natural height from cell size, stats pushed to bottom */}
+          <div ref={heatmapRef} className="flex-shrink-0 overflow-hidden flex items-center">
             <div className="flex" style={{ gap: GAP }}>
               {weeks.map((week, wi) => (
                 <div key={wi} className="flex flex-col" style={{ gap: GAP }}>
@@ -149,9 +148,9 @@ export default function GithubTile({ data, editing, onChange }: Props) {
             </div>
           </div>
 
-          {/* stats row — always anchored at bottom */}
+          {/* stats row — anchored at bottom */}
           <div
-            className="flex-shrink-0 grid grid-cols-3 gap-2 rounded-xl px-3 pt-3 pb-4"
+            className="mt-auto flex-shrink-0 grid grid-cols-3 gap-2 rounded-xl px-3 pt-3 pb-4"
             style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
           >
             <StatItem
