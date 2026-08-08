@@ -204,12 +204,6 @@ export default function Home() {
 
       {/* hero */}
       <section className="max-w-6xl mx-auto px-8 pt-20 pb-16 flex flex-col items-center text-center gap-6">
-        <div
-          className="px-3 py-1 rounded-full text-xs font-medium"
-          style={{ background: 'var(--surface-2)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-        >
-          Free — no credit card
-        </div>
         <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight whitespace-nowrap">
           Your portfolio deserves more.
         </h1>
@@ -224,15 +218,7 @@ export default function Home() {
           >
             Build yours free
           </Link>
-          <a
-            href="#preview"
-            className="px-7 py-3 rounded-xl text-sm font-medium transition-colors"
-            style={{ color: '#b0b0b0', border: '1px solid var(--border)' }}
-          >
-            See an example
-          </a>
         </div>
-        <p className="text-xs" style={{ color: '#444' }}>Takes about 5 minutes. No design skills needed.</p>
       </section>
 
       {/* fake portfolio preview */}
