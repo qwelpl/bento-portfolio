@@ -1,5 +1,6 @@
 'use client'
 import { BentoTile, TileType } from '@/lib/types'
+import RichTextEditor from './RichTextEditor'
 
 interface Props {
   tile: BentoTile
@@ -61,7 +62,14 @@ export default function TileEditPanel({ tile, onChange, onDelete, onClose }: Pro
       case 'text': return (
         <>
           {field('Heading (optional)', 'heading', 'About me')}
-          {textarea('Content', 'content', 'Write something...')}
+          <div className="flex flex-col gap-1">
+            <label className="text-xs" style={{ color: 'var(--text-muted)' }}>Content</label>
+            <RichTextEditor
+              value={(tile.data.content as string) || ''}
+              onChange={val => set('content', val)}
+              placeholder="Write something..."
+            />
+          </div>
         </>
       )
       case 'image': return (
