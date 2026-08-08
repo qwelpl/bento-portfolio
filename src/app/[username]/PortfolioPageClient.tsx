@@ -19,7 +19,7 @@ export default function PortfolioPageClient({ portfolio }: { portfolio: Portfoli
 
   return (
     <main className="min-h-screen">
-      <div ref={containerRef} style={{ maxWidth: 1920, margin: '0 auto' }}>
+      <div ref={containerRef} style={{ maxWidth: 1920, margin: '0 auto', paddingTop: 48 }}>
         {width > 0 && (
           <PortfolioView
             tiles={portfolio.tiles || []}
