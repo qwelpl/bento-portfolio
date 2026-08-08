@@ -26,7 +26,10 @@ export default function BioTile({ data, editing, onChange }: Props) {
         </div>
         <input className={inp} value={data.avatar || ''} onChange={e => s('avatar', e.target.value)} placeholder="Avatar URL" />
         <div className="flex flex-col gap-1">
-          <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Bio · markdown</span>
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>Bio · markdown</span>
+            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" rel="noopener noreferrer" className="text-[10px] w-4 h-4 flex items-center justify-center rounded-full border transition-colors" style={{ color: 'var(--text-muted)', borderColor: 'var(--border)' }} title="Markdown syntax guide">?</a>
+          </div>
           <textarea
             className="bg-transparent border border-white/10 focus:border-white/30 rounded text-sm text-white outline-none p-1.5 placeholder:text-white/20 resize-none font-mono transition-colors w-full"
             rows={3}
