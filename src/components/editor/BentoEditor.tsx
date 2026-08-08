@@ -30,12 +30,12 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
   const [layout, setLayout] = useState<GridItem[]>(initialLayout)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
-  const [width, setWidth] = useState(800)
+  const [width, setWidth] = useState(1920)
 
   const containerRef = useCallback((node: HTMLDivElement | null) => {
     if (!node) return
-    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width))
-    observer.observe(node)
+    const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width))
+    ro.observe(node)
     setWidth(node.offsetWidth)
   }, [])
 
@@ -97,20 +97,12 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
           </button>
         </div>
 
-        <div className="flex-1 overflow-auto p-6 flex items-start justify-center" onClick={() => setEditingId(null)} style={{ background: 'var(--bg)' }}>
+        <div className="flex-1 overflow-auto p-6" onClick={() => setEditingId(null)}>
           <div
             ref={containerRef}
-            className="relative flex-shrink-0 rounded-2xl overflow-hidden"
-            style={{
-              width: 'min(1100px, 100%)',
-              height: 724,
-              background: 'var(--bg)',
-              border: '1px solid var(--border)',
-              boxShadow: '0 0 0 1px var(--border), 0 32px 64px rgba(0,0,0,0.4)',
-            }}
+            style={{ maxWidth: 1920 }}
             onClick={e => e.stopPropagation()}
           >
-            <div className="absolute inset-0 overflow-hidden" onClick={() => setEditingId(null)}>
           <GridLayout
             layout={layout.map(l => ({ ...l, static: l.i === editingId }))}
             cols={4}
@@ -119,7 +111,6 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
             margin={[12, 12]}
             compactType={null}
             preventCollision={true}
-            maxRows={4}
             onLayoutChange={(l: (GridItem & { static?: boolean })[]) => setLayout(l.map(({ static: _s, ...rest }) => rest as GridItem))}
             draggableHandle=".drag-handle"
           >
@@ -200,11 +191,10 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
           </GridLayout>
 
           {tiles.length === 0 && (
-            <div className="flex items-center justify-center h-full" style={{ color: 'var(--text-muted)' }}>
+            <div className="flex items-center justify-center" style={{ height: 400, color: 'var(--text-muted)' }}>
               <p className="text-sm">Add tiles from the left panel</p>
             </div>
           )}
-            </div>
           </div>
         </div>
       </div>
