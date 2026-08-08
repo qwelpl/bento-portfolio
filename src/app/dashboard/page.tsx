@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import CopyButton from './CopyButton'
 
 export default async function Dashboard() {
   const supabase = await createClient()
@@ -50,15 +51,7 @@ export default async function Dashboard() {
             >
               Edit portfolio
             </Link>
-            <button
-              onClick={async () => {
-                await navigator.clipboard.writeText(`${window.location.origin}/${portfolio.username}`)
-              }}
-              className="px-4 py-2 rounded-xl text-sm hover:text-white transition-colors"
-              style={{ background: 'var(--surface-2)', color: 'var(--text-muted)', border: '1px solid var(--border)' }}
-            >
-              Copy link
-            </button>
+            <CopyButton username={portfolio.username} />
           </div>
           {portfolio.updated_at && (
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
