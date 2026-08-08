@@ -131,12 +131,12 @@ const STEPS = [
   {
     n: '01',
     title: 'Sign up',
-    desc: 'Create an account in seconds. No credit card, no forms. Just an email.',
+    desc: 'Create an account in seconds.',
   },
   {
     n: '02',
     title: 'Build your grid',
-    desc: 'Pick tiles — bio, skills, GitHub, links, repos. Drag them wherever you want.',
+    desc: 'Pick tiles like bio, skills, GitHub, links and repos. Drag them wherever you want.',
   },
   {
     n: '03',
@@ -257,7 +257,6 @@ export default function Home() {
       <section className="max-w-5xl mx-auto px-8 pb-28">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white tracking-tight">Up in three steps</h2>
-          <p className="text-sm mt-3" style={{ color: 'var(--text-muted)' }}>No tutorials. No setup. Just build.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {STEPS.map(s => (
