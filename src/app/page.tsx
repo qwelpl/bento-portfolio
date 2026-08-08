@@ -141,7 +141,7 @@ const STEPS = [
   {
     n: '03',
     title: 'Share one link',
-    desc: 'Your portfolio is live at /yourname. Paste it in your bio, resume, or DMs.',
+    desc: 'Your portfolio is live at /yourname.',
   },
 ]
 
@@ -149,7 +149,7 @@ const FEATURES = [
   {
     icon: '▦',
     title: 'Drag and drop',
-    desc: 'Place tiles anywhere on a free canvas. No templates. Your layout, your rules.',
+    desc: 'Place tiles anywhere on a canvas.',
   },
   {
     icon: '◈',
@@ -280,7 +280,6 @@ export default function Home() {
       <section className="max-w-5xl mx-auto px-8 pb-28">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-white tracking-tight">Everything you need</h2>
-          <p className="text-sm mt-3" style={{ color: 'var(--text-muted)' }}>Tiles for every part of your identity.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map(f => (
