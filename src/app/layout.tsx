@@ -13,8 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tiledrop",
+  title: { default: 'Tiledrop', template: '%s | Tiledrop' },
   description: "Build a bento grid portfolio that actually shows who you are. Drag, drop, share.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://tiledrop.vercel.app'),
+  openGraph: {
+    siteName: 'Tiledrop',
+    type: 'website',
+  },
+  twitter: { card: 'summary' },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
