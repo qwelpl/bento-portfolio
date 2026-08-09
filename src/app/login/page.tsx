@@ -22,7 +22,11 @@ export default function LoginPage() {
     const supabase = createClient()
 
     if (mode === 'signup') {
-      const { error: signUpError } = await supabase.auth.signUp({ email, password })
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      })
       if (signUpError) { setError(signUpError.message); setLoading(false); return }
 
       // create portfolio row
