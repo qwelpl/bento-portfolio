@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { createClient } from '@/lib/supabase/server'
 
 function FakeBioTile() {
   return (
@@ -178,7 +179,11 @@ const FEATURES = [
   },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const loggedIn = !!user
+
   return (
     <main className="min-h-screen" style={{ background: 'var(--bg)' }}>
 
@@ -189,16 +194,28 @@ export default function Home() {
           <span className="text-white font-bold tracking-tight text-lg">Tiledrop</span>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/login" className="text-sm transition-colors" style={{ color: 'var(--text-muted)' }}>
-            Sign in
-          </Link>
-          <Link
-            href="/login"
-            className="text-sm px-4 py-1.5 rounded-lg transition-opacity hover:opacity-80 text-white font-medium"
-            style={{ background: 'var(--accent)' }}
-          >
-            Get started
-          </Link>
+          {loggedIn ? (
+            <Link
+              href="/dashboard"
+              className="text-sm px-4 py-1.5 rounded-lg transition-opacity hover:opacity-80 text-white font-medium"
+              style={{ background: 'var(--accent)' }}
+            >
+              Go to dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-sm transition-colors" style={{ color: 'var(--text-muted)' }}>
+                Sign in
+              </Link>
+              <Link
+                href="/login"
+                className="text-sm px-4 py-1.5 rounded-lg transition-opacity hover:opacity-80 text-white font-medium"
+                style={{ background: 'var(--accent)' }}
+              >
+                Get started
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -212,11 +229,11 @@ export default function Home() {
         </p>
         <div className="flex items-center gap-3 mt-2">
           <Link
-            href="/login"
+            href={loggedIn ? '/dashboard' : '/login'}
             className="px-7 py-3 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-80"
             style={{ background: 'var(--accent)' }}
           >
-            Build yours free
+            {loggedIn ? 'Go to dashboard' : 'Build yours free'}
           </Link>
         </div>
       </section>
@@ -328,11 +345,11 @@ export default function Home() {
           <h2 className="text-4xl font-bold text-white tracking-tight">Ready to stand out?</h2>
           <p style={{ color: 'var(--text-muted)' }}>Takes 5 minutes. No templates. No nonsense.</p>
           <Link
-            href="/login"
+            href={loggedIn ? '/dashboard' : '/login'}
             className="px-9 py-3.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-80 relative"
             style={{ background: 'var(--accent)' }}
           >
-            Build your portfolio free
+            {loggedIn ? 'Go to dashboard' : 'Build your portfolio free'}
           </Link>
         </div>
       </section>
@@ -344,8 +361,14 @@ export default function Home() {
           <span className="text-sm font-bold text-white">Tiledrop</span>
         </div>
         <div className="flex gap-6 text-xs" style={{ color: '#444' }}>
-          <Link href="/login" className="hover:text-white transition-colors">Sign up</Link>
-          <Link href="/login" className="hover:text-white transition-colors">Login</Link>
+          {loggedIn ? (
+            <Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
+          ) : (
+            <>
+              <Link href="/login" className="hover:text-white transition-colors">Sign up</Link>
+              <Link href="/login" className="hover:text-white transition-colors">Login</Link>
+            </>
+          )}
         </div>
       </footer>
 
