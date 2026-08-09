@@ -7,6 +7,7 @@ export interface TileData {
   avatar?: string
   github?: string
   githubUsername?: string
+  gitProvider?: 'github' | 'gitlab'
   tileTitle?: string
   repos?: string[]
   twitter?: string

@@ -17,7 +17,7 @@ const TILE_DEFAULTS: Record<TileType, { w: number; h: number; label: string; min
   links:    { w: 1, h: 2, label: 'Links' },
   location: { w: 1, h: 1, label: 'Location' },
   skills:        { w: 2, h: 1, label: 'Skills' },
-  github:        { w: 2, h: 2, label: 'GitHub', minH: 2 },
+  github:        { w: 2, h: 2, label: 'Git', minH: 2 },
   'github-repos': { w: 2, h: 3, label: 'Repositories' },
 }
 
@@ -115,7 +115,7 @@ export default function BentoEditor({ initialTiles, initialLayout, onSave }: Pro
           onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         >
-          <span>GitHub</span>
+          <span>Git</span>
           <svg className="w-3 h-3 transition-transform" style={{ transform: expandedGroup === 'github' ? 'rotate(90deg)' : 'rotate(0deg)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>

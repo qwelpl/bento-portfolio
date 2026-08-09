@@ -34,20 +34,28 @@ export default function GithubReposTile({ data, editing, onChange }: Props) {
   const [meta, setMeta] = useState<Record<string, RepoMeta | null>>({})
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const provider = data.gitProvider ?? 'github'
+
   useEffect(() => {
     repos.forEach(r => {
       if (meta[r] !== undefined) return
-      fetch(`/api/github/repo?q=${encodeURIComponent(r)}`)
+      const endpoint = provider === 'gitlab' ? `/api/gitlab/repo?q=${encodeURIComponent(r)}` : `/api/github/repo?q=${encodeURIComponent(r)}`
+      fetch(endpoint)
         .then(res => res.ok ? res.json() : null)
         .then(d => setMeta(prev => ({ ...prev, [r]: d })))
         .catch(() => setMeta(prev => ({ ...prev, [r]: null })))
     })
-  }, [repos.join(',')])
+  }, [repos.join(','), provider])
 
   const resolve = (raw: string) => {
     const trimmed = raw.trim()
     if (!trimmed) return null
     return trimmed.includes('/') ? trimmed : `${data.githubUsername || ''}/${trimmed}`
+  }
+
+  const repoUrl = (r: string, m: RepoMeta | null) => {
+    if (m?.html_url) return m.html_url
+    return provider === 'gitlab' ? `https://gitlab.com/${r}` : `https://github.com/${r}`
   }
 
   const addRepo = (raw: string) => {
@@ -91,7 +99,23 @@ export default function GithubReposTile({ data, editing, onChange }: Props) {
             />
           </div>
         </div>
-        <input className={inp} value={data.githubUsername || ''} onChange={e => onChange?.({ ...data, githubUsername: e.target.value })} placeholder="Your GitHub username (used when owner is omitted)" />
+        <div className="flex gap-1">
+          {(['github', 'gitlab'] as const).map(p => (
+            <button
+              key={p}
+              onClick={() => onChange?.({ ...data, gitProvider: p })}
+              className="px-2.5 py-0.5 rounded text-xs font-medium transition-colors"
+              style={{
+                background: provider === p ? 'var(--accent)' : 'var(--surface-2)',
+                color: provider === p ? 'white' : 'var(--text-muted)',
+                border: '1px solid var(--border)',
+              }}
+            >
+              {p === 'github' ? 'GitHub' : 'GitLab'}
+            </button>
+          ))}
+        </div>
+        <input className={inp} value={data.githubUsername || ''} onChange={e => onChange?.({ ...data, githubUsername: e.target.value })} placeholder={`Your ${provider === 'gitlab' ? 'GitLab' : 'GitHub'} username (used when owner is omitted)`} />
       </div>
     )
   }
@@ -113,7 +137,7 @@ export default function GithubReposTile({ data, editing, onChange }: Props) {
           return (
             <a
               key={r}
-              href={m?.html_url ?? `https://github.com/${r}`}
+              href={repoUrl(r, m)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-col gap-1.5 rounded-xl p-3 transition-colors group"

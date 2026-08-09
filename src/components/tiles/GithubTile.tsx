@@ -8,7 +8,7 @@ interface Contribution {
   level: number
 }
 
-interface GithubData {
+interface GitData {
   contributions: Contribution[]
   total: { lastYear: number }
   prs: number
@@ -21,7 +21,8 @@ interface Props {
   onChange?: (data: TileData) => void
 }
 
-const COLORS = ['#1e1e1e', '#0e4429', '#006d32', '#26a641', '#39d353']
+const GH_COLORS = ['#1e1e1e', '#0e4429', '#006d32', '#26a641', '#39d353']
+const GL_COLORS = ['#1e1e1e', '#380d75', '#6030b0', '#9b59d0', '#c490e4']
 const GAP = 2
 
 const inp = "bg-transparent border-b border-white/10 focus:border-white/30 text-white text-sm outline-none w-full py-0.5 placeholder:text-white/20 transition-colors"
@@ -40,32 +41,42 @@ function StatItem({ value, label, icon }: { value: number; label: string; icon: 
 }
 
 export default function GithubTile({ data, editing, onChange }: Props) {
+  const provider = data.gitProvider ?? 'github'
   const username = data.githubUsername || ''
-  const [gh, setGh] = useState<GithubData | null>(null)
+  const [git, setGit] = useState<GitData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [cellSize, setCellSize] = useState(10)
   const heatmapRef = useRef<HTMLDivElement>(null)
 
+  const colors = provider === 'gitlab' ? GL_COLORS : GH_COLORS
+  const profileUrl = provider === 'gitlab'
+    ? `https://gitlab.com/${username}`
+    : `https://github.com/${username}`
+  const apiPath = provider === 'gitlab'
+    ? `/api/gitlab/${encodeURIComponent(username)}`
+    : `/api/github/${encodeURIComponent(username)}`
+
   useEffect(() => {
     if (!username) return
     setLoading(true)
     setError(null)
-    fetch(`/api/github/${encodeURIComponent(username)}`)
+    setGit(null)
+    fetch(apiPath)
       .then(r => { if (!r.ok) throw new Error('not found'); return r.json() })
-      .then(d => { setGh(d); setLoading(false) })
+      .then(d => { setGit(d); setLoading(false) })
       .catch(() => { setError('User not found'); setLoading(false) })
-  }, [username])
+  }, [username, provider])
 
   const weeks = useMemo(() => {
-    const contributions = gh?.contributions ?? []
+    const contributions = git?.contributions ?? []
     const recent = contributions.slice(-182)
     const firstDow = recent[0] ? new Date(recent[0].date + 'T00:00:00').getDay() : 0
     const padded: (Contribution | null)[] = [...Array(firstDow).fill(null), ...recent]
     const w: (Contribution | null)[][] = []
     for (let i = 0; i < padded.length; i += 7) w.push(padded.slice(i, i + 7))
     return w
-  }, [gh])
+  }, [git])
 
   useEffect(() => {
     const el = heatmapRef.current
@@ -93,17 +104,39 @@ export default function GithubTile({ data, editing, onChange }: Props) {
 
   return (
     <div className="p-4 pb-3 h-full flex flex-col gap-2 min-h-0">
-      {/* header — editable in place */}
       <div className="flex-shrink-0 flex flex-col gap-1.5">
         {editing ? (
           <>
             <input className={titleInp} value={data.tileTitle || ''} onChange={e => onChange?.({ ...data, tileTitle: e.target.value })} placeholder="Section title" />
-            <input className={inp} value={username} onChange={e => onChange?.({ ...data, githubUsername: e.target.value })} placeholder="GitHub username" autoFocus />
+            {/* provider toggle */}
+            <div className="flex gap-1 mb-0.5">
+              {(['github', 'gitlab'] as const).map(p => (
+                <button
+                  key={p}
+                  onClick={() => onChange?.({ ...data, gitProvider: p })}
+                  className="px-2.5 py-0.5 rounded text-xs font-medium transition-colors"
+                  style={{
+                    background: provider === p ? 'var(--accent)' : 'var(--surface-2)',
+                    color: provider === p ? 'white' : 'var(--text-muted)',
+                    border: '1px solid var(--border)',
+                  }}
+                >
+                  {p === 'github' ? 'GitHub' : 'GitLab'}
+                </button>
+              ))}
+            </div>
+            <input
+              className={inp}
+              value={username}
+              onChange={e => onChange?.({ ...data, githubUsername: e.target.value })}
+              placeholder={`${provider === 'gitlab' ? 'GitLab' : 'GitHub'} username`}
+              autoFocus
+            />
           </>
         ) : (
           <>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{data.tileTitle || 'GitHub'}</p>
-            <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer"
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{data.tileTitle || (provider === 'gitlab' ? 'GitLab' : 'GitHub')}</p>
+            <a href={profileUrl} target="_blank" rel="noopener noreferrer"
               className="text-sm font-medium text-white hover:underline">{username}</a>
           </>
         )}
@@ -121,9 +154,8 @@ export default function GithubTile({ data, editing, onChange }: Props) {
         </div>
       )}
 
-      {!loading && !error && gh && (
+      {!loading && !error && git && (
         <>
-          {/* heatmap — fills remaining space */}
           <div ref={heatmapRef} className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
             <div className="flex" style={{ gap: GAP }}>
               {weeks.map((week, wi) => (
@@ -139,7 +171,7 @@ export default function GithubTile({ data, editing, onChange }: Props) {
                           height: cellSize,
                           borderRadius: Math.max(cellSize * 0.2, 1),
                           flexShrink: 0,
-                          background: day ? COLORS[Math.min(day.level, 4)] : 'transparent',
+                          background: day ? colors[Math.min(day.level, 4)] : 'transparent',
                         }}
                       />
                     )
@@ -149,38 +181,25 @@ export default function GithubTile({ data, editing, onChange }: Props) {
             </div>
           </div>
 
-          {/* stats row — anchored at bottom */}
           <div
             className="mt-auto flex-shrink-0 grid grid-cols-3 gap-2 rounded-xl px-3 pt-3 pb-4"
             style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
           >
-            <StatItem
-              value={gh.total?.lastYear ?? 0}
-              label="contributions"
-              icon={
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              }
-            />
-            <StatItem
-              value={gh.prs}
-              label="pull requests"
-              icon={
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>
-              }
-            />
-            <StatItem
-              value={gh.issues}
-              label="issues"
-              icon={
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <circle cx="12" cy="12" r="9" /><path strokeLinecap="round" d="M12 8v4M12 16h.01" />
-                </svg>
-              }
-            />
+            <StatItem value={git.total?.lastYear ?? 0} label="contributions" icon={
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            } />
+            <StatItem value={git.prs} label={provider === 'gitlab' ? 'merge reqs' : 'pull requests'} icon={
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            } />
+            <StatItem value={git.issues} label="issues" icon={
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <circle cx="12" cy="12" r="9" /><path strokeLinecap="round" d="M12 8v4M12 16h.01" />
+              </svg>
+            } />
           </div>
         </>
       )}
